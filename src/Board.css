@@ -1,0 +1,30 @@
+@media only screen and (orientation: landscape){
+  .table {
+    height: 96vh;
+    width: 96vh;
+    margin: 2vh;
+  }
+}
+@media only screen and (orientation: portrait) {
+  .table{
+    height: 96vw;
+    width: 96vw;
+    margin: 2vw;
+  }
+}
+
+.table{
+  border: 1px solid black;
+  overflow: hidden;
+}
+
+.gameRows{
+  height: 10%;
+  border: 1px solid black;
+}
+
+.gameCell{
+  width: 10%;
+  border: 1px solid black;
+  overflow: hidden;
+}
