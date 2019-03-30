@@ -33,6 +33,10 @@ export default class Pawn extends Component {
       if(row + 1 < 8 && col - 1 > -1 && board[row + 1][col - 1] && board[row + 1][col - 1].team !== this.props.team) {
         moves.push({x: row + 1, y: col - 1});
       }
+      //special logic for firstTurn
+      if(this.props.firstTurn && row + 2 < 8 && !board[row + 2][col]) {
+        moves.push({x: row + 2, y: col});
+      }
     }
     else {
       //standard moves
@@ -45,6 +49,10 @@ export default class Pawn extends Component {
       }
       if(row - 1 > -1 && col - 1 > -1 && board[row - 1][col - 1] && board[row - 1][col - 1].team !== this.props.team) {
         moves.push({x: row - 1, y: col - 1});
+      }
+      //special logic for firstTurn
+      if(this.props.firstTurn && row - 2 < 8 && !board[row - 2][col]) {
+        moves.push({x: row - 2, y: col});
       }
     }
 
