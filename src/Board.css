@@ -16,15 +16,18 @@
 .table{
   border: 1px solid black;
   overflow: hidden;
+  margin: 0px;
 }
 
 .gameRows{
   height: 10%;
   border: 1px solid black;
+  margin: 0px;
 }
 
 .gameCell{
   width: 10%;
   border: 1px solid black;
   overflow: hidden;
+  margin: 0px;
 }

@@ -22,12 +22,22 @@ class App extends Component {
         [null, null, null, null, null, null, null, null],
         [null, null, null, null, null, null, null, null],
         [{name: "pawn", team: "black", coords: {x:6, y: 0}},{name: "pawn", team: "black", coords: {x:6, y: 1}},{name: "pawn", team: "black", coords: {x:6, y: 2}},{name: "pawn", team: "black", coords: {x:6, y: 3}},{name: "pawn", team: "black", coords: {x:6, y: 4}},{name: "pawn", team: "black", coords: {x:6, y: 5}},{name: "pawn", team: "black", coords: {x:6, y: 6}},{name: "pawn", team: "black", coords: {x:6, y: 7}}],
-        [{name: "castle", team: "black", coords: {x:7, y: 0}},{name: "knight", team: "black", coords: {x:7, y: 1}},{name: "bishop", team: "black", coords: {x:7, y: 2}},{name: "queen", team: "black", coords: {x:7, y: 3}},{name: "castle", team: "black", coords: {x:7, y: 4}},{name: "castle", team: "black", coords: {x:7, y: 5}},{name: "castle", team: "black", coords: {x:7, y: 6}},{name: "castle", team: "black", coords: {x:7, y: 7}}],
+        [{name: "castle", team: "black", coords: {x:7, y: 0}},{name: "knight", team: "black", coords: {x:7, y: 1}},{name: "bishop", team: "black", coords: {x:7, y: 2}},{name: "queen", team: "black", coords: {x:7, y: 3}},{name: "king", team: "black", coords: {x:7, y: 4}},{name: "bishop", team: "black", coords: {x:7, y: 5}},{name: "knight", team: "black", coords: {x:7, y: 6}},{name: "castle", team: "black", coords: {x:7, y: 7}}],
       ]
     }
   }
 
+  getBoard = () => {
+    return this.state.board;
+  }
+
   movePiece(e, row, col) {
+    let validMoves = JSON.parse(e.dataTransfer.getData("validMoves"));
+    if(!validMoves.find((element) => {
+      return element.x === row && element.y === col;
+    })) {
+      return;
+    }
     //gets the board, the piece and the initial point of the piece
     let [initx, , inity] = e.dataTransfer.getData("initcoords");
     let board = this.state.board;
@@ -50,17 +60,17 @@ class App extends Component {
       switch(piece.name){
         //goes through and finds which piece to render
         case "pawn":
-          return <Pawn team={piece.team} coords={[piece.coords.x, piece.coords.y]} />
+          return <Pawn team={piece.team} coords={[piece.coords.x, piece.coords.y]} getBoard={this.getBoard}/>
         case "king":
-          return <King team={piece.team} coords={[piece.coords.x, piece.coords.y]} />
+          return <King team={piece.team} coords={[piece.coords.x, piece.coords.y]} getBoard={this.getBoard}/>
         case "queen":
-          return <Queen team={piece.team} coords={[piece.coords.x, piece.coords.y]} />
+          return <Queen team={piece.team} coords={[piece.coords.x, piece.coords.y]} getBoard={this.getBoard}/>
         case "castle":
-          return <Castle team={piece.team} coords={[piece.coords.x, piece.coords.y]} />
+          return <Castle team={piece.team} coords={[piece.coords.x, piece.coords.y]} getBoard={this.getBoard}/>
         case "knight":
-          return <Knight team={piece.team} coords={[piece.coords.x, piece.coords.y]} />
+          return <Knight team={piece.team} coords={[piece.coords.x, piece.coords.y]} getBoard={this.getBoard}/>
         case "bishop":
-          return <Bishop team={piece.team} coords={[piece.coords.x, piece.coords.y]} />
+          return <Bishop team={piece.team} coords={[piece.coords.x, piece.coords.y]} getBoard={this.getBoard}/>
         default:
           return
     }}

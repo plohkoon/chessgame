@@ -8,16 +8,61 @@ export default class Knight extends Component {
   constructor(props){
     super(props);
   }
-  validMoves() {
-    return null
+  toString() {
+    return "knight";
   }
-  isValidMove(){
-    return true
+  validMoves() {
+    let [row, col] = this.props.coords,
+        moves = [],
+        board = this.props.getBoard(),
+        team = this.props.team;
+    //potential moves moving down board
+    let x = row + 2,
+        y = col + 1;
+    if(x < 8 && y < 8 && (board[x][y] === null || board[x][y].team !== team)) {
+      moves.push({x: x, y: y});
+    }
+    y = col - 1;
+    if(x < 8 && y > -1 && (board[x][y] === null || board[x][y].team !== team)) {
+      moves.push({x: x, y: y});
+    }
+    //potential moves moving up board
+    x = row - 2;
+    y = col + 1;
+    if(x > -1 && y < 8 && (board[x][y] === null || board[x][y].team !== team)) {
+      moves.push({x: x, y: y});
+    }
+    y = col - 1;
+    if(x > -1 && y > -1 && (board[x][y] === null || board[x][y].team !== team)) {
+      moves.push({x: x, y: y});
+    }
+    //potential moves moving right
+    x = row + 1;
+    y = col + 2;
+    if(x < 8 && y < 8 && (board[x][y] === null || board[x][y].team !== team)) {
+      moves.push({x: x, y: y});
+    }
+    x = row - 1;
+    if(x > -1 && y < 8 && (board[x][y] === null || board[x][y].team !== team)) {
+      moves.push({x: x, y: y});
+    }
+    //potential moves moving left
+    x = row + 1;
+    y = col - 2;
+    if(x < 8 && y > -1 && (board[x][y] === null || board[x][y].team !== team)) {
+      moves.push({x: x, y: y});
+    }
+    x = row - 1
+    if(x > -1 && y > -1 && (board[x][y] === null || board[x][y].team !== team)) {
+      moves.push({x: x, y: y});
+    }
+    console.log(moves);
+    return moves;
   }
   onDrag(e) {
     e.dataTransfer.setData("piece", this)
     e.dataTransfer.setData("initcoords", this.props.coords)
-    e.dataTransfer.setData("validMoves", this.validMoves())
+    e.dataTransfer.setData("validMoves", JSON.stringify(this.validMoves()))
   }
   render() {
     if(this.props.team === "white") {
