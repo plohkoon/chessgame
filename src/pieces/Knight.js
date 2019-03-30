@@ -1,16 +1,19 @@
 import React, { Component } from 'react';
-
+//getes image
 import black from './Images/knight_black.svg';
 import white from './Images/knight_white.svg';
 
 export default class Knight extends Component {
-
+  //constructor for consistency
+  //eslint-disable-next-line
   constructor(props){
     super(props);
   }
+  //toString if needed
   toString() {
     return "knight";
   }
+  //gets list of moves
   validMoves() {
     let [row, col] = this.props.coords,
         moves = [],
@@ -59,6 +62,7 @@ export default class Knight extends Component {
     console.log(moves);
     return moves;
   }
+  //puts necessary value into datatransfer
   onDrag(e) {
     e.dataTransfer.setData("piece", this)
     e.dataTransfer.setData("initcoords", this.props.coords)

@@ -1,25 +1,32 @@
 import React, { Component } from 'react';
-
+//gets image for pieces
 import black from './Images/pawn_black.svg';
 import white from './Images/pawn_white.svg';
 
-export default class Pawn extends Component {
+import "./piece.css";
 
+export default class Pawn extends Component {
+//constructor for consistency
+//eslint-disable-next-line
   constructor(props){
     super(props);
   }
+  //toString if necessary
   toString(){
     return "pawn"
   }
+  //gets list of valid moves
   validMoves() {
     let [row, col] = this.props.coords,
         moves = [],
         board = this.props.getBoard();
-
+    //breaks it into case by team as move set is team dependant
     if(this.props.team === "white") {
+      //standard move
       if(row + 1 < 8 && !board[row + 1][col]) {
         moves.push({x: row + 1, y: col});
       }
+      //moves if capture available
       if(row + 1 < 8 && col + 1 < 8 && board[row + 1][col + 1] && board[row + 1][col + 1].team !== this.props.team) {
         moves.push({x: row + 1, y: col + 1});
       }
@@ -28,9 +35,11 @@ export default class Pawn extends Component {
       }
     }
     else {
+      //standard moves
       if(row - 1 > -1&& !board[row - 1][col]) {
         moves.push({x: row - 1, y: col});
       }
+      //moves if capture available
       if(row - 1 > -1 && col + 1 < 8 && board[row - 1][col + 1] && board[row - 1][col + 1].team !== this.props.team) {
         moves.push({x: row - 1, y: col + 1});
       }
@@ -42,13 +51,11 @@ export default class Pawn extends Component {
     console.log(moves);
     return moves;
   }
+  //sets necessary data into dataTransfer
   onDrag(e) {
     e.dataTransfer.setData("piece", this)
     e.dataTransfer.setData("initcoords", this.props.coords)
     e.dataTransfer.setData("validMoves", JSON.stringify(this.validMoves()))
-  }
-  isValidMove(){
-    return true
   }
   render() {
     if(this.props.team === "white") {

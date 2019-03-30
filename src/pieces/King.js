@@ -1,16 +1,19 @@
 import React, { Component } from 'react';
-
+//gets image files
 import black from './Images/king_black.svg';
 import white from './Images/king_white.svg';
 
 export default class King extends Component {
-
+  //constructor for consistency
+  //eslint-disable-next-line
   constructor(props){
     super(props);
   }
+  //toString if needed
   toString() {
     return "king";
   }
+  //scans through board and gets valide moves
   validMoves() {
     let [row, col] = this.props.coords,
         moves = [],
@@ -29,13 +32,11 @@ export default class King extends Component {
     console.log(moves)
     return moves;
   }
+  //puts necessary values into the transfer
   onDrag(e) {
     e.dataTransfer.setData("piece", this)
     e.dataTransfer.setData("initcoords", this.props.coords)
     e.dataTransfer.setData("validMoves", JSON.stringify(this.validMoves()))
-  }
-  isValidMove(){
-    return true
   }
   render() {
     if(this.props.team === "white") {
