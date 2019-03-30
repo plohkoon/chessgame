@@ -23,7 +23,8 @@ class App extends Component {
         [null, null, null, null, null, null, null, null],
         [{name: "pawn", team: "black", coords: {x:6, y: 0}},{name: "pawn", team: "black", coords: {x:6, y: 1}},{name: "pawn", team: "black", coords: {x:6, y: 2}},{name: "pawn", team: "black", coords: {x:6, y: 3}},{name: "pawn", team: "black", coords: {x:6, y: 4}},{name: "pawn", team: "black", coords: {x:6, y: 5}},{name: "pawn", team: "black", coords: {x:6, y: 6}},{name: "pawn", team: "black", coords: {x:6, y: 7}}],
         [{name: "castle", team: "black", coords: {x:7, y: 0}},{name: "knight", team: "black", coords: {x:7, y: 1}},{name: "bishop", team: "black", coords: {x:7, y: 2}},{name: "queen", team: "black", coords: {x:7, y: 3}},{name: "king", team: "black", coords: {x:7, y: 4}},{name: "bishop", team: "black", coords: {x:7, y: 5}},{name: "knight", team: "black", coords: {x:7, y: 6}},{name: "castle", team: "black", coords: {x:7, y: 7}}],
-      ]
+      ],
+      turn: "white"
     }
   }
 
@@ -50,8 +51,9 @@ class App extends Component {
     //transfers the piece to new square
     board[initx][inity] = null;
     board[row][col] = piece;
+    let nextTurn = (this.state.turn === "white") ? "black" : "white";
     //resets and rerenders board
-    this.setState({board: board});
+    this.setState({board: board, turn: nextTurn});
   }
 
   getPiece(piece) {
@@ -60,17 +62,17 @@ class App extends Component {
       switch(piece.name){
         //goes through and finds which piece to render
         case "pawn":
-          return <Pawn team={piece.team} coords={[piece.coords.x, piece.coords.y]} getBoard={this.getBoard}/>
+          return <Pawn team={piece.team} curTurn={this.state.turn} coords={[piece.coords.x, piece.coords.y]} getBoard={this.getBoard}/>
         case "king":
-          return <King team={piece.team} coords={[piece.coords.x, piece.coords.y]} getBoard={this.getBoard}/>
+          return <King team={piece.team} curTurn={this.state.turn} coords={[piece.coords.x, piece.coords.y]} getBoard={this.getBoard}/>
         case "queen":
-          return <Queen team={piece.team} coords={[piece.coords.x, piece.coords.y]} getBoard={this.getBoard}/>
+          return <Queen team={piece.team} curTurn={this.state.turn} coords={[piece.coords.x, piece.coords.y]} getBoard={this.getBoard}/>
         case "castle":
-          return <Castle team={piece.team} coords={[piece.coords.x, piece.coords.y]} getBoard={this.getBoard}/>
+          return <Castle team={piece.team} curTurn={this.state.turn} coords={[piece.coords.x, piece.coords.y]} getBoard={this.getBoard}/>
         case "knight":
-          return <Knight team={piece.team} coords={[piece.coords.x, piece.coords.y]} getBoard={this.getBoard}/>
+          return <Knight team={piece.team} curTurn={this.state.turn} coords={[piece.coords.x, piece.coords.y]} getBoard={this.getBoard}/>
         case "bishop":
-          return <Bishop team={piece.team} coords={[piece.coords.x, piece.coords.y]} getBoard={this.getBoard}/>
+          return <Bishop team={piece.team} curTurn={this.state.turn} coords={[piece.coords.x, piece.coords.y]} getBoard={this.getBoard}/>
         default:
           return
     }}

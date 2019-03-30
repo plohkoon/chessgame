@@ -40,10 +40,10 @@ export default class King extends Component {
   }
   render() {
     if(this.props.team === "white") {
-      return (<img src={white} alt="white king" draggable onDragStart={(e)=>{this.onDrag(e)}} className="piece" />)
+      return (<img src={white} alt="white king" draggable={this.props.team === this.props.curTurn} onDragStart={(e)=>{this.onDrag(e)}} className="piece" />)
     }
     else {
-      return (<img src={black} alt="black king" draggable onDragStart={(e)=>{this.onDrag(e)}} className="piece" />)
+      return (<img src={black} alt="black king" draggable={this.props.team === this.props.curTurn} onDragStart={(e)=>{this.onDrag(e)}} className="piece" />)
     }
   }
 

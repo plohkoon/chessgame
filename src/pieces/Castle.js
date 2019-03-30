@@ -81,10 +81,10 @@ export default class Castle extends Component {
   }
   render() {
     if(this.props.team === "white") {
-      return (<img src={white} alt="white castle" draggable onDragStart={(e)=>{this.onDrag(e)}} className="piece" />)
+      return (<img src={white} alt="white castle" draggable={this.props.team === this.props.curTurn} onDragStart={(e)=>{this.onDrag(e)}} className="piece" />)
     }
     else {
-      return (<img src={black} alt="black castle" draggable onDragStart={(e)=>{this.onDrag(e)}} className="piece" />)
+      return (<img src={black} alt="black castle" draggable={this.props.team === this.props.curTurn} onDragStart={(e)=>{this.onDrag(e)}} className="piece" />)
     }
   }
 

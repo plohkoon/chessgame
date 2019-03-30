@@ -59,10 +59,10 @@ export default class Pawn extends Component {
   }
   render() {
     if(this.props.team === "white") {
-      return (<img src={white} alt="white pawn" draggable onDragStart={(e)=>{this.onDrag(e)}} className="piece" />)
+      return (<img src={white} alt="white pawn" draggable={this.props.team === this.props.curTurn} onDragStart={(e)=>{this.onDrag(e)}} className="piece" />)
     }
     else {
-      return (<img src={black} alt="black pawn" draggable onDragStart={(e)=>{this.onDrag(e)}} className="piece" />)
+      return (<img src={black} alt="black pawn" draggable={this.props.team === this.props.curTurn} onDragStart={(e)=>{this.onDrag(e)}} className="piece" />)
     }
   }
 
