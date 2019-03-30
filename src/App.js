@@ -1,6 +1,7 @@
+//imports of basics
 import React, { Component } from 'react';
 import './Board.css';
-
+//imports of all pieces
 import Pawn   from'./pieces/Pawn.js';
 import Bishop from './pieces/Bishop.js';
 import Castle from './pieces/Castle.js';
@@ -11,6 +12,7 @@ import Queen  from './pieces/Queen.js';
 class App extends Component {
   constructor(props) {
     super(props);
+    //initializes the board in state
     this.state = {
       board: [
         [{name: "castle", team: "white", coords: {x: 0, y: 0}},{name: "knight", team: "white", coords: {x: 0, y: 1}},{name: "bishop", team: "white", coords: {x: 0, y: 2}},{name: "king", team: "white", coords: {x: 0, y: 3}},{name: "queen", team: "white", coords: {x: 0, y: 4}},{name: "bishop", team: "white", coords: {x: 0, y: 5}},{name: "knight", team: "white", coords: {x: 0, y: 6}},{name: "castle", team: "white", coords: {x: 0, y: 7}}],
@@ -26,24 +28,27 @@ class App extends Component {
   }
 
   movePiece(e, row, col) {
+    //gets the board, the piece and the initial point of the piece
     let [initx, , inity] = e.dataTransfer.getData("initcoords");
     let board = this.state.board;
     let piece = board[initx][inity];
-
+    //sets the pieces pints to the new
     piece.coords = {
       x: row,
       y: col
     }
-
+    //transfers the piece to new square
     board[initx][inity] = null;
     board[row][col] = piece;
-
+    //resets and rerenders board
     this.setState({board: board});
   }
 
   getPiece(piece) {
+    //skips if null
     if(piece !== null) {
       switch(piece.name){
+        //goes through and finds which piece to render
         case "pawn":
           return <Pawn team={piece.team} coords={[piece.coords.x, piece.coords.y]} />
         case "king":
@@ -56,10 +61,13 @@ class App extends Component {
           return <Knight team={piece.team} coords={[piece.coords.x, piece.coords.y]} />
         case "bishop":
           return <Bishop team={piece.team} coords={[piece.coords.x, piece.coords.y]} />
+        default:
+          return
     }}
   }
-
+  //traverses the board array and renders the rows and columns
   renderBoard() {
+    //travers the rows and uses rowNum as the key
     return this.state.board.map((rowArr, rowNum) => {
       return <tr className="gameRows" key={rowNum}>
         {rowArr.map((piece, colNum) => {
@@ -70,6 +78,7 @@ class App extends Component {
   }
 
   render() {
+    //renders the board in a table
     return (
         <table className="table">
           <tbody>
