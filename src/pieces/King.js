@@ -29,6 +29,26 @@ export default class King extends Component {
         }
       }
     }
+    if(this.props.castleable) {
+      if(board[row][0].name === "castle") {
+        let bool = true;
+        for(let i = 1; i < col && bool; i++) {
+          bool = (board[row][i] === null)
+        }
+        if(bool) {
+          moves.push({x: row, y: 1, castle: true});
+        }
+      }
+      if(board[row][7].name === "castle") {
+        let bool = true;
+        for(let i = 6; i > col && bool; i--) {
+          bool = (board[row][i] === null);
+        }
+        if(bool) {
+          moves.push({x: row, y: 6, castle: true})
+        }
+      }
+    }
     console.log(moves)
     return moves;
   }
