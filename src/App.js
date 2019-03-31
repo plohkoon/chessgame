@@ -24,7 +24,8 @@ class App extends Component {
         [{name: "pawn", firstTurn: true, team: "black", coords: {x:6, y: 0}},{name: "pawn", firstTurn: true, team: "black", coords: {x:6, y: 1}},{name: "pawn", firstTurn: true, team: "black", coords: {x:6, y: 2}},{name: "pawn", firstTurn: true, team: "black", coords: {x:6, y: 3}},{name: "pawn", firstTurn: true, team: "black", coords: {x:6, y: 4}},{name: "pawn", firstTurn: true, team: "black", coords: {x:6, y: 5}},{name: "pawn", firstTurn: true, team: "black", coords: {x:6, y: 6}},{name: "pawn", firstTurn: true, team: "black", coords: {x:6, y: 7}}],
         [{name: "castle", team: "black", coords: {x:7, y: 0}},{name: "knight", team: "black", coords: {x:7, y: 1}},{name: "bishop", team: "black", coords: {x:7, y: 2}},{name: "queen", team: "black", coords: {x:7, y: 3}},{name: "king", castleable: true, team: "black", coords: {x:7, y: 4}},{name: "bishop", team: "black", coords: {x:7, y: 5}},{name: "knight", team: "black", coords: {x:7, y: 6}},{name: "castle", team: "black", coords: {x:7, y: 7}}],
       ],
-      turn: "white"
+      turn: "white",
+      winner: null
     }
   }
 
@@ -43,9 +44,13 @@ class App extends Component {
       return;
     }
     //gets the board, the piece and the initial point of the piece
-    let [initx, , inity] = e.dataTransfer.getData("initcoords");
-    let board = this.state.board;
-    let piece = board[initx][inity];
+    let [initx, , inity] = e.dataTransfer.getData("initcoords"),
+        board = this.state.board,
+        piece = board[initx][inity];
+
+    if(board[row][col] && board[row][col].name === "king") {
+      this.setState({winner: piece.team})
+    }
     //sets the pieces pints to the new
     piece.coords = {
       x: row,
@@ -123,15 +128,22 @@ class App extends Component {
       </tr>
     });
   }
+  //render this winner announcment
+  getWinElement() {
+    return (this.state.winner) ? <h1>{this.state.winner}</h1> : <div></div>
+  }
 
   render() {
     //renders the board in a table
     return (
+      <div>
+        {this.getWinElement()}
         <table className="table">
           <tbody>
             {this.renderBoard()}
           </tbody>
         </table>
+      </div>
     );
   }
 }
