@@ -31,3 +31,19 @@
   overflow: hidden;
   margin: 0px;
 }
+/* nth-child selectors to colour the board cells*/
+.gameRows:nth-child(2n) .gameCell:nth-child(2n) {
+  background-color: grey;
+}
+
+.gameRows:nth-child(2n) .gameCell:nth-child(2n + 1) {
+  background-color: white;
+}
+
+.gameRows:nth-child(2n + 1) .gameCell:nth-child(2n) {
+  background-color: white;
+}
+
+.gameRows:nth-child(2n + 1) .gameCell:nth-child(2n + 1) {
+  background-color: grey;
+}
