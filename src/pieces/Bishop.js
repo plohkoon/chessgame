@@ -79,7 +79,8 @@ export default class Bishop extends Component {
   onDrag(e) {
     e.dataTransfer.setData("piece", this)
     e.dataTransfer.setData("initcoords", this.props.coords)
-    e.dataTransfer.setData("validMoves", JSON.stringify(this.validMoves()))
+    let moves = this.validMoves()
+    this.props.highlightSpaces(moves);
   }
   render() {
     if(this.props.team === "white") {

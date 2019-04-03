@@ -31,6 +31,10 @@
   overflow: hidden;
   margin: 0px;
 }
+
+.moveSpace {
+  border: 1px solid red;
+}
 /* nth-child selectors to colour the board cells*/
 .gameRows:nth-child(2n) .gameCell:nth-child(2n) {
   background-color: grey;

@@ -64,24 +64,53 @@ class App extends Component {
           {name: "knight", team: "black", coords: {x: 7, y: 6}},
           {name: "castle", team: "black", coords: {x: 7, y: 7}}],
       ],
-
+      //keeps track of turn and if there is a winner
       turn: "white",
-      winner: null
+      winner: null,
+      //keeps track of if a piece is moving and what spaces it can move to
+      moving: false,
+      isMove: [
+        [false, false, false, false, false, false, false, false],
+        [false, false, false, false, false, false, false, false],
+        [false, false, false, false, false, false, false, false],
+        [false, false, false, false, false, false, false, false],
+        [false, false, false, false, false, false, false, false],
+        [false, false, false, false, false, false, false, false],
+        [false, false, false, false, false, false, false, false],
+        [false, false, false, false, false, false, false, false],
+      ]
     }
   }
   //returns the board
   getBoard = () => {
     return this.state.board;
   }
-
+  //executes the move
   movePiece(e, row, col) {
     //gets list of moves and the move from list
-    let validMoves = JSON.parse(e.dataTransfer.getData("validMoves")),
+    /*let validMoves = JSON.parse(e.dataTransfer.getData("validMoves")),
         move = validMoves.find((element) => {
           return element.x === row && element.y === col;
-        });
+        });*/
+    let move = this.state.isMove[row][col]
     //if it is not valid move rejects and moves on
     if(!move) {
+      //resets the state for use on next move
+      this.setState(
+        {
+          moving: false,
+          isMove: [
+            [false, false, false, false, false, false, false, false],
+            [false, false, false, false, false, false, false, false],
+            [false, false, false, false, false, false, false, false],
+            [false, false, false, false, false, false, false, false],
+            [false, false, false, false, false, false, false, false],
+            [false, false, false, false, false, false, false, false],
+            [false, false, false, false, false, false, false, false],
+            [false, false, false, false, false, false, false, false],
+          ]
+        }
+      );
       return;
     }
     //gets the board, the piece and the initial point of the piece
@@ -134,9 +163,25 @@ class App extends Component {
     board[row][col] = piece;
     let nextTurn = (this.state.turn === "white") ? "black" : "white";
     //resets and rerenders board
-    this.setState({board: board, turn: nextTurn});
+    this.setState(
+      {
+        board: board,
+        turn: nextTurn,
+        moving: false,
+        isMove: [
+          [false, false, false, false, false, false, false, false],
+          [false, false, false, false, false, false, false, false],
+          [false, false, false, false, false, false, false, false],
+          [false, false, false, false, false, false, false, false],
+          [false, false, false, false, false, false, false, false],
+          [false, false, false, false, false, false, false, false],
+          [false, false, false, false, false, false, false, false],
+          [false, false, false, false, false, false, false, false],
+        ]
+      }
+    );
   }
-
+  //gets the piece based on the name
   getPiece(piece) {
     //skips if null
     if(piece !== null) {
@@ -149,6 +194,7 @@ class App extends Component {
             curTurn={this.state.turn}
             coords={[piece.coords.x, piece.coords.y]}
             getBoard={this.getBoard}
+            highlightSpaces={this.highlightSpaces}
           />
         case "king":
           return <King
@@ -157,6 +203,7 @@ class App extends Component {
             curTurn={this.state.turn}
             coords={[piece.coords.x, piece.coords.y]}
             getBoard={this.getBoard}
+            highlightSpaces={this.highlightSpaces}
           />
         case "queen":
           return <Queen
@@ -164,6 +211,7 @@ class App extends Component {
             curTurn={this.state.turn}
             coords={[piece.coords.x, piece.coords.y]}
             getBoard={this.getBoard}
+            highlightSpaces={this.highlightSpaces}
           />
         case "castle":
           return <Castle
@@ -171,6 +219,7 @@ class App extends Component {
             curTurn={this.state.turn}
             coords={[piece.coords.x, piece.coords.y]}
             getBoard={this.getBoard}
+            highlightSpaces={this.highlightSpaces}
           />
         case "knight":
           return <Knight
@@ -178,6 +227,7 @@ class App extends Component {
             curTurn={this.state.turn}
             coords={[piece.coords.x, piece.coords.y]}
             getBoard={this.getBoard}
+            highlightSpaces={this.highlightSpaces}
           />
         case "bishop":
           return <Bishop
@@ -185,6 +235,7 @@ class App extends Component {
             curTurn={this.state.turn}
             coords={[piece.coords.x, piece.coords.y]}
             getBoard={this.getBoard}
+            highlightSpaces={this.highlightSpaces}
           />
         default:
           return
@@ -197,7 +248,9 @@ class App extends Component {
       return <tr className="gameRows" key={rowNum}>
         {rowArr.map((piece, colNum) => {
           return <td
-            className="gameCell"
+            className={
+              this.state.isMove[rowNum][colNum] ? "gameCell moveSpace" : "gameCell"
+            }
             key={colNum}
             onDragOver={(e)=>{
               e.preventDefault();
@@ -217,13 +270,43 @@ class App extends Component {
   getWinElement() {
     return (this.state.winner) ? <h1>{this.state.winner}</h1> : <div></div>
   }
-
+  //highlights the spaces available for move
+  highlightSpaces = (spaces)=> {
+    //if the move spaces have already been calculated stops the funcion
+    if(this.state.moving) {
+      return;
+    }
+    //initializes the isMove array
+    let isMoveArray = [
+          [false, false, false, false, false, false, false, false],
+          [false, false, false, false, false, false, false, false],
+          [false, false, false, false, false, false, false, false],
+          [false, false, false, false, false, false, false, false],
+          [false, false, false, false, false, false, false, false],
+          [false, false, false, false, false, false, false, false],
+          [false, false, false, false, false, false, false, false],
+          [false, false, false, false, false, false, false, false]
+        ];
+    //runs through each possible movoe and sets that space to true in isMove
+    spaces.forEach((element) => {
+      isMoveArray[element.x][element.y] = true
+    })
+    //sets the state to trigger a rerender with move points
+    this.setState(
+      {
+        moving: true,
+        isMove: isMoveArray
+      }
+    );
+  }
   render() {
     //renders the board in a table
     return (
       <div>
         {this.getWinElement()}
-        <table className="table">
+        <table
+          className="table"
+        >
           <tbody>
             {this.renderBoard()}
           </tbody>
