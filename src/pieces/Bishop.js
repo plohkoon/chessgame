@@ -93,6 +93,10 @@ export default class Bishop extends Component {
             this.onDrag(e)
           }}
           className="piece"
+          onClick={e => {
+            this.props.setClickTransfer(this.props.coords, this)
+            this.props.highlightSpaces(this.validMoves())
+          }}
         />)
     }
     else {
@@ -103,6 +107,10 @@ export default class Bishop extends Component {
           draggable={this.props.team === this.props.curTurn}
           onDragStart={(e)=>{this.onDrag(e)}}
           className="piece"
+          onClick={e => {
+            this.props.setClickTransfer(this.props.coords, this)
+            this.props.highlightSpaces(this.validMoves())
+          }}
         />
       )
     }

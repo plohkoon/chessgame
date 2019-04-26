@@ -141,6 +141,10 @@ export default class Queen extends Component {
             this.onDrag(e)
           }}
           className="piece"
+          onClick={e => {
+            this.props.setClickTransfer(this.props.coords, this)
+            this.props.highlightSpaces(this.validMoves())
+          }}
         />
       )
     }
@@ -154,6 +158,10 @@ export default class Queen extends Component {
             this.onDrag(e)
           }}
           className="piece"
+          onClick={e => {
+            this.props.setClickTransfer(this.props.coords, this)
+            this.props.highlightSpaces(this.validMoves())
+          }}
         />
       )
     }

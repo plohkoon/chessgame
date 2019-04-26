@@ -78,7 +78,11 @@ class App extends Component {
         [false, false, false, false, false, false, false, false],
         [false, false, false, false, false, false, false, false],
         [false, false, false, false, false, false, false, false],
-      ]
+      ],
+      clickTransfer: {
+        piece: null,
+        initcoords: null
+      }
     }
   }
   //returns the board
@@ -86,12 +90,9 @@ class App extends Component {
     return this.state.board;
   }
   //executes the move
-  movePiece(e, row, col) {
+  movePiece(row, col, e) {
+    console.log("moving piece")
     //gets list of moves and the move from list
-    /*let validMoves = JSON.parse(e.dataTransfer.getData("validMoves")),
-        move = validMoves.find((element) => {
-          return element.x === row && element.y === col;
-        });*/
     let move = this.state.isMove[row][col]
     //if it is not valid move rejects and moves on
     if(!move) {
@@ -108,14 +109,21 @@ class App extends Component {
             [false, false, false, false, false, false, false, false],
             [false, false, false, false, false, false, false, false],
             [false, false, false, false, false, false, false, false],
-          ]
+          ],
+          clickTransfer: {
+            piece: null,
+            initcoords: null
+          }
         }
       );
       return;
     }
     //gets the board, the piece and the initial point of the piece
-    let [initx, , inity] = e.dataTransfer.getData("initcoords"),
-        board = this.state.board,
+    let initx, inity;
+    e ?
+        [initx, , inity]  = e.dataTransfer.getData("initcoords") :
+        [initx, inity]     = this.state.clickTransfer.coords;
+    let board = this.state.board,
         piece = board[initx][inity];
 
     if(board[row][col] && board[row][col].name === "king") {
@@ -177,9 +185,21 @@ class App extends Component {
           [false, false, false, false, false, false, false, false],
           [false, false, false, false, false, false, false, false],
           [false, false, false, false, false, false, false, false],
-        ]
+        ],
+        clickTransfer: {
+          piece: null,
+          coords: null
+        }
       }
     );
+  }
+
+  setClickTransfer = (coords, piece) => {
+    this.setState({clickTransfer: {
+      coords: coords,
+      piece: piece
+    }})
+    console.log(this.state.clickTransfer);
   }
   //gets the piece based on the name
   getPiece(piece) {
@@ -195,6 +215,7 @@ class App extends Component {
             coords={[piece.coords.x, piece.coords.y]}
             getBoard={this.getBoard}
             highlightSpaces={this.highlightSpaces}
+            setClickTransfer={this.setClickTransfer}
           />
         case "king":
           return <King
@@ -204,6 +225,7 @@ class App extends Component {
             coords={[piece.coords.x, piece.coords.y]}
             getBoard={this.getBoard}
             highlightSpaces={this.highlightSpaces}
+            setClickTransfer={this.setClickTransfer}
           />
         case "queen":
           return <Queen
@@ -212,6 +234,7 @@ class App extends Component {
             coords={[piece.coords.x, piece.coords.y]}
             getBoard={this.getBoard}
             highlightSpaces={this.highlightSpaces}
+            setClickTransfer={this.setClickTransfer}
           />
         case "castle":
           return <Castle
@@ -220,6 +243,7 @@ class App extends Component {
             coords={[piece.coords.x, piece.coords.y]}
             getBoard={this.getBoard}
             highlightSpaces={this.highlightSpaces}
+            setClickTransfer={this.setClickTransfer}
           />
         case "knight":
           return <Knight
@@ -228,6 +252,7 @@ class App extends Component {
             coords={[piece.coords.x, piece.coords.y]}
             getBoard={this.getBoard}
             highlightSpaces={this.highlightSpaces}
+            setClickTransfer={this.setClickTransfer}
           />
         case "bishop":
           return <Bishop
@@ -236,6 +261,7 @@ class App extends Component {
             coords={[piece.coords.x, piece.coords.y]}
             getBoard={this.getBoard}
             highlightSpaces={this.highlightSpaces}
+            setClickTransfer={this.setClickTransfer}
           />
         default:
           return
@@ -257,8 +283,13 @@ class App extends Component {
               e.dataTransfer.setData("newCoords", [rowNum, colNum])
             }}
             onDrop={(e)=>{
-              this.movePiece(e, rowNum, colNum)}
+              this.movePiece(rowNum, colNum, e)}
             }
+            onClick={() => {
+              if(this.state.clickTransfer.piece !== null) {
+                this.movePiece(rowNum, colNum, null);
+              }
+            }}
           >
             {this.getPiece(piece)}
           </td>
@@ -272,6 +303,7 @@ class App extends Component {
   }
   //highlights the spaces available for move
   highlightSpaces = (spaces)=> {
+    console.log("highlightingSpaces");
     //if the move spaces have already been calculated stops the funcion
     if(this.state.moving) {
       return;

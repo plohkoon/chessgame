@@ -33,7 +33,7 @@
 }
 
 .moveSpace {
-  border: 1px solid red;
+  border: 2px solid red;
 }
 /* nth-child selectors to colour the board cells*/
 .gameRows:nth-child(2n) .gameCell:nth-child(2n) {
