@@ -81,8 +81,10 @@ export default class Knight extends Component {
           }}
           className="piece"
           onClick={e => {
-            this.props.setClickTransfer(this.props.coords, this)
-            this.props.highlightSpaces(this.validMoves())
+            if(this.props.team === this.props.curTurn){
+              this.props.setClickTransfer(this.props.coords, this, this.props.team)
+              this.props.highlightSpaces(this.validMoves())
+            }
           }}
         />
       )
@@ -98,8 +100,10 @@ export default class Knight extends Component {
           }}
           className="piece"
           onClick={e => {
-            this.props.setClickTransfer(this.props.coords, this)
-            this.props.highlightSpaces(this.validMoves())
+            if(this.props.team === this.props.curTurn){
+              this.props.setClickTransfer(this.props.coords, this, this.props.team)
+              this.props.highlightSpaces(this.validMoves())
+            }
           }}
         />
       )

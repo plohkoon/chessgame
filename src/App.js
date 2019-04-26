@@ -194,12 +194,15 @@ class App extends Component {
     );
   }
 
-  setClickTransfer = (coords, piece) => {
-    this.setState({clickTransfer: {
-      coords: coords,
-      piece: piece
-    }})
-    console.log(this.state.clickTransfer);
+  setClickTransfer = (coords, piece, team) => {
+    console.log(team, this.state.turn)
+    if(team === this.state.turn) {
+      console.log('setting clickTransfer')
+      this.setState({clickTransfer: {
+        coords: coords,
+        piece: piece
+      }})
+    }
   }
   //gets the piece based on the name
   getPiece(piece) {
