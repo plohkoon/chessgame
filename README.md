@@ -1,3 +1,13 @@
+###Desctription
+
+This was a first basic dive into React and how it's live rendering system works. It is a drag and drop implemented chess game built as a standalone react app.
+
+Most features have been fully implemented including:
+-drag and drop moves
+-click moves
+-castling
+-move checking and highlighting for all pieces
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
